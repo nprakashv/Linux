@@ -11,9 +11,9 @@ static struct kfifo kfifo;
 
 static int myinit(void)
 {
-	int ret = -1;
+	int ret;
 	char *ptr = "Hello Nikhil Prakash V";
-	char *buf = NULL;
+	char *buf;
 
 	ret = kfifo_alloc(&kfifo, 1000, GFP_KERNEL);
 	if (ret) {
@@ -23,11 +23,11 @@ static int myinit(void)
 
 	ret = kfifo_in(&kfifo, ptr, strlen(ptr));
 	if (!ret) {
-		pr_err("FIFO enqueue failed\n");
+		pr_err("Enqueue failed\n");
 		goto err_enq;
 	}
 
-	buf = (char *)kmalloc(strlen(ptr) + 1, GFP_KERNEL);
+	buf = (char *) kmalloc(strlen(ptr) + 1, GFP_KERNEL);
 
 	while(!kfifo_is_empty(&kfifo)) {
 		kfifo_out(&kfifo, buf, strlen(ptr));
@@ -51,5 +51,4 @@ static void myexit(void)
 module_init(myinit);
 module_exit(myexit);
 
-MODULE_DESCRIPTION("Sample driver to check the working of kernel fifo's");
 MODULE_LICENSE("GPL");
